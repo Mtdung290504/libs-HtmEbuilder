@@ -186,11 +186,11 @@ class HtmEBuilder {
     /**
      * Set attribute for this target
      * @param {String} key
-     * @param {any} value
+     * @param {String} value
      * @returns {HtmEBuilder}
      */
     attr(key, value) {
-        this.#htmlElement.setAttribute(key, value.toString());
+        this.#htmlElement.setAttribute(key, value);
         return this;
     }
 
@@ -233,7 +233,15 @@ class HtmEBuilder {
      * @returns {HtmEBuilder}
      */
     childAppend(selector, element) {
-        qs(this.#htmlElement, selector).appendChild(element);
+        const childToAppend = qs(this.#htmlElement, selector);
+        if(childToAppend)
+            childToAppend.appendChild(element);
+        else
+            wrn(
+                "Element:",
+                this.#htmlElement,
+                `\n\nDon't have selector: "${selector}", ignore.`
+            );
         return this;
     }
 
