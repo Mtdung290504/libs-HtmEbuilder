@@ -6,6 +6,7 @@ class HtmEBuilder {
      * @type {HTMLElement}
      */
     #htmlElement;
+    #listeners = {};
 
     /**
      * @param {keyof HTMLElementTagNameMap | HTMLElement} tagNameOrElement
@@ -91,7 +92,7 @@ class HtmEBuilder {
      * @param {String} textContent
      * @returns {HtmEBuilder}
      */
-    textContent(textContent) {
+    text(textContent) {
         this.#htmlElement.textContent = textContent;
         return this;
     }
@@ -132,6 +133,12 @@ class HtmEBuilder {
             if (sourceToRemove) {
                 this.#htmlElement.removeChild(sourceToRemove);
                 sourceToRemove = null;
+            } else {
+                wrn(
+                    "Element:",
+                    this.#htmlElement,
+                    `\n\nDon't have source: "${src}", ignore.`
+                );
             }
         } else
             wrn(
@@ -234,11 +241,33 @@ class HtmEBuilder {
      * Add event listener for this target
      * @param {keyof HTMLElementEventMap} event
      * @param {(this: HTMLElement, ev: Event) => any} listener
+     * @param {String | null} [id=null] 
+     * @param {boolean | AddEventListenerOptions | null} [options=null]
+     * @returns {HtmEBuilder}
+     */
+    on(event, listener, id = null, options = null) {
+        this.#htmlElement.addEventListener(event, listener, options);
+        if (id) this.#listeners[id] = listener;
+        return this;
+    }
+
+    /**
+     * Remove event listener for this target
+     * @param {keyof HTMLElementEventMap} event
+     * @param {String} id
      * @param {boolean | AddEventListenerOptions} options
      * @returns {HtmEBuilder}
      */
-    on(event, listener, options = null) {
-        this.#htmlElement.addEventListener(event, listener, options);
+    rmOn(event, id, options) {
+        const listener = this.#listeners[id];
+        if (listener)
+            this.#htmlElement.removeEventListener(event, listener, options);
+        else
+            wrn(
+                "Element:",
+                this.#htmlElement,
+                `\n\nDon't have listener id: ${id}, ignore.`
+            );
         return this;
     }
 
