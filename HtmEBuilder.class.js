@@ -199,6 +199,18 @@ class HtmEBuilder {
     }
 
     /**
+     * Set style property for this target
+     * @param {String} key 
+     * @param {String} value 
+     * @param {String | undefined} priority 
+     * @returns {HtmEBuilder}
+     */
+    property(key, value, priority = undefined) {
+        this.#htmlElement.style.setProperty(key, value, priority);
+        return this;
+    }
+
+    /**
      * Append child element(s) to this target
      * @param {...HTMLElement} elements - The child elements to append
      * @returns {HtmEBuilder}
