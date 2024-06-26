@@ -11,19 +11,6 @@ const divBuilder = HtmEBuilder.generate('div')
     .on('click', () => {
         divBuilder.tgClass('blue');
     }, 'change-color')
-    // Create a child element within a child
-    .append(
-        HtmEBuilder.generate('div')
-            .class('child-div')
-            .text('I am a child div')
-            .el
-    )
-    // Append child to specific child element
-    .childAppend('.child-div', 
-        HtmEBuilder.generate('span')
-            .text('I am a child span inside child div')
-            .el
-    )
     .attachToEleHas('#container');
 
 // Create and add an image
@@ -56,12 +43,28 @@ const videoBuilder = HtmEBuilder.generate('video')
 // Create a button to remove event listener
 const buttonBuilder = HtmEBuilder.generate('button')
     .text('Remove Change Color Click Event')
+    .style({ marginBottom: '10px' })
     .on('click', () => {
         divBuilder.rmOn('click', 'change-color');
         alert('Click to change text color event removed from div');
     })
     .attachToEle(divBuilder.el);
 
+divBuilder
+    // Create a child element within a child
+    .append(
+        HtmEBuilder.generate('div')
+            .class('child-div')
+            .text('I am a child div')
+            .el
+    )
+    // Append child to specific child element
+    .childAppend('.child-div', 
+        HtmEBuilder.generate('span')
+            .text('I am a child span inside child div')
+            .style({ margin: '5px', padding: '5px', background: '#222' })
+            .el
+    )
 // Create an instance from an existing element
 const existingElement = HtmEBuilder.fromChildOf(dQs('#container'), '#demoDiv');
 lg(existingElement.el);
