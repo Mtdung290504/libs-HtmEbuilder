@@ -30,7 +30,7 @@ const openBtnB = new HtmEBuilder("button")
         marginRight: "10px",
         cursor: "pointer",
     })
-    .innerHTML("&#9776;")
+    .html("&#9776;")
     .on("click", () => {
         navB.style({ transform: "translateX(0)" });
     })
@@ -71,7 +71,7 @@ const headerB = new HtmEBuilder("header")
             }).el
         ).el
     )
-    .attachTo(bodyB.el);
+    .attachToEle(bodyB.el);
 
 const navB = new HtmEBuilder("nav")
     .class("nav")
@@ -94,4 +94,4 @@ const navB = new HtmEBuilder("nav")
             })
             .text("Nav").el
     )
-    .attachTo(bodyB.el);
+    .attachToEle(bodyB.el);
